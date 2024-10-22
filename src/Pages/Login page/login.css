@@ -1,0 +1,32 @@
+
+  
+  .popup-inner {
+    
+  }
+  .close{
+    color:black;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    
+  }
+  .close:hover{
+    color: red;
+  }
+  .submit{
+    background-color: rgb(71, 176, 217);
+    margin-top: 25px;
+    border: none;
+    border-radius: 15px;
+    padding: 10px;
+    color: white;
+  }
+
+
+
+    
+ 
+
+
+  
