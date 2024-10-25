@@ -21,13 +21,14 @@ import { Link } from 'react-router-dom';
 
   const Navsection2 = styled.div`
    display: flex;
-   padding-bottom: 5px;
+   padding: 15px;
    height: auto;
   align-items: center;
   z-index: 99;
   border: .1px solid purple;
   background-color: #411B66;
-  border-radius: 20px;
+  position:sticky;
+  top: 0;
 
 `
 

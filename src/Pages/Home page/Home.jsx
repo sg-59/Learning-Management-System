@@ -4,127 +4,146 @@ import Datepicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCalendarAlt } from 'react-icons/fa'
-import { styled,keyframes } from 'styled-components'
-import { MDBDropdown, MDBDropdownMenu, MDBDropdownToggle, MDBDropdownItem, MDBIcon, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBBtn,MDBContainer } from 'mdb-react-ui-kit';
+import { styled, keyframes, createGlobalStyle } from 'styled-components'
+import { MDBDropdown, MDBDropdownMenu, MDBDropdownToggle, MDBDropdownItem, MDBIcon, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBBtn, MDBContainer } from 'mdb-react-ui-kit';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
+import Loading from '../../Component/Loading';
+import Navbar1 from '../../Component/Navbar1';
 
 
 
-const Navsection1 = styled.div`
-width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0;
-  margin: 0;
+
+const DropDown = styled(MDBDropdownToggle)`
+   font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+  color: #411B66;
+  font-size: 12px;
 `
+const CardTitle = styled(MDBCardTitle)`
+    font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+  color: #411B66;
+`
+
+const CardText = styled(MDBCardText)`
+      font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+  color: #411B66;
+`
+
 const Navsection2 = styled.div`
    display: flex;
-   padding-bottom: 5px;
+   padding: 7px;
    height: auto;
-  align-items: center;
-  z-index: 99;
-  border: .1px solid purple;
-  background-color: #411B66;
-  border-radius: 20px;
+   align-items: center;
+   z-index: 99;
+   /* background: linear-gradient(135deg, #411B66, #8B4CAF); */
+   background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
+   border-radius: 10px 10px 0 0;
+   justify-content: space-between;
+
 
 `
+
+const Message = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
+  padding: 1px;
+
+`
+
 
 
 const Content = styled.div`
-
   gap:1rem;  
   width: 100%;
-  white-space: nowrap; /* Prevents line breaks within the container */
-  overflow-x: scroll; /* Enables horizontal scroll */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-margin-top:25px;
+  white-space: nowrap; 
+  overflow-x: scroll; 
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+  margin: 25px;
   &::-webkit-scrollbar {
     display: none;
   }
-      
-
-`
-
+  `
 const SubMain = styled.div`
    min-width: 30%;
-display: inline-block; 
-  margin-right: 10px;
+display: inline-block;
   text-align: center;
-&:hover{
-  transition: all 1s ease;
- transform: scale(1.05);
-}
 `
-const Input = styled.input`
-  width: 100%;
-  border: none;
-  padding: 7px;
-  border-radius: 25px;
-  &::placeholder {
-  padding-left: 5px;
-  
+const AnimatedCard = styled(MDBCard)`
+  position: relative;
+  overflow: hidden; /* Ensures the gradient stays within the card */
+  transition: background-color 0.5s ease;
+  background: linear-gradient(135deg, #e5deeb, rgba(255, 255, 255, 1));
+  margin-left: 45px;
+  margin-right: 45px;
+  &:hover {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(231, 207, 250, 0.3), rgba(209, 229, 252, 0.3)); /* Overlay color */
+      animation: slide 0.5s forwards; /* Animation for slide effect */
+    }
   }
-  &:focus{
-outline: none;
+`;
+
+// Keyframes for the slide animation
+const slideAnimation = `
+  @keyframes slide {
+    0% {
+      top: -100%; /* Start above the card */
+      left: 0; /* Align to the left */
+      height: 0; /* No height initially */
+      width: 100%; /* Full width */
+    }
+    100% {
+      top: 0; /* Move to the top of the card */
+      left: 0; /* Align to the left */
+      height: 100%; /* Full height */
+      width: 100%; /* Full width */
+    }
   }
-`
-const Leftside = styled.div`
-  width: 70%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+`;
 
-`
-const Rightside = styled.div`
-  width: 30%;
-  display: flex;
-  align-items: center;
-  justify-content:space-between ;
-`
 
-const Searchbar = styled.div`
-  border: .5px solid #411B66;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 50%;
-  border-radius: 25px;
- 
-`
+// Define a global style for keyframes
+const GlobalStyle = createGlobalStyle`
+  ${slideAnimation}
+`;
 
-const Image = styled.img`
-width: 7rem;
 
-`
 
-const Button = styled.div`
-  padding: 5px;
-  background-color:#411B66 ;
-  color:white;
-  border-radius: 7px;
-margin-right: 17px;
-  &:hover{
-    background-color:#572d81;
-  }
-`
 
 
 const Leftside2 = styled.div`
   display: flex;
-  width: 50%;
+  width: 40%;
   align-items: center;
   justify-content: space-around;
+ margin-left: 67px;
 
 `
 const Rightside2 = styled.div`
-width: 50%;
+width: 40%;
   display: flex;
-  color: #f4e5e5;
+  color: #411B66;
   align-items: center;
   justify-content: flex-end;
+  margin-right: 67px;
+
 `
 const Titles = styled.div`
   display: flex;
@@ -133,93 +152,77 @@ const Titles = styled.div`
 justify-content: center;
 margin-left:3%;
 margin-right: 3%;
+font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
 `
 
+const InputGroup = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #dfdfdf;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: border-color 0.3s ease;
 
-//loading ...........
+  &:focus-within {
+    border-color: #007bff; /* Change border color on focus */
+  }
+`
 
-const before8 = keyframes`
-  0% {
-    width: 0.5em;
-    box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
-  }
-  35% {
-    width: 3.5em;
-    box-shadow: 0 -0.5em rgba(225, 20, 98, 0.75), 0 0.5em rgba(111, 202, 220, 0.75);
-  }
-  70% {
-    width: 0.5em;
-    box-shadow: -1em -0.5em rgba(225, 20, 98, 0.75), 1em 0.5em rgba(111, 202, 220, 0.75);
-  }
-  100% {
-    box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+const InputStyled = styled.input`
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 16px;
+  color: #333;
+  background-color: transparent;
+  &::placeholder{
+    color:#411B66 ;
+    font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
   }
 `;
 
-const after6 = keyframes`
-  0% {
-    height: 0.5em;
-    box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
-  }
-  35% {
-    height: 3.5em;
-    box-shadow: 0.5em 0 rgba(61, 184, 143, 0.75), -0.5em 0 rgba(233, 169, 32, 0.75);
-  }
-  70% {
-    height: 0.5em;
-    box-shadow: 0.5em -1em rgba(61, 184, 143, 0.75), -0.5em 1em rgba(233, 169, 32, 0.75);
-  }
-  100% {
-    box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
-  }
+const InputGroupAppend = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
-// Loader container
-const Loader = styled.div`
-  position: relative;
-  width: 3.5em;
-  height: 3.5em;
-  transform: rotate(165deg);
-  position: absolute;
-  top: calc(50% - 1.25em);
-  left: calc(50% - 1.25em);
-  
-  &:before, &:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: block;
-    width: 0.5em;
-    height: 0.5em;
-    border-radius: 0.25em;
-    transform: translate(-50%, -50%);
-  }
+const InputGroupText = styled.span`
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 1.2em;
+  padding: 0 8px;
 
-  &:before {
-    animation: ${before8} 2s infinite;
-  }
-
-  &:after {
-    animation: ${after6} 2s infinite;
+  &:hover {
+    color: #007bff; /* Change icon color on hover */
   }
 `;
-
-
-
 
 function CustomInput({ value, onClick }) {
   return (
-    <div className='input-group'>
-      <input type="text" className='form-control' value={value} placeholder='Date' onClick={onClick} readOnly />
-      <div className='input-group-append'>
-        <span className='input-group-text ms-3' onClick={onClick}>
+    <InputGroup>
+      <InputStyled type="text" value={value} placeholder="Select Date" onClick={onClick} readOnly />
+      <InputGroupAppend>
+        <InputGroupText onClick={onClick}>
           <FaCalendarAlt />
-        </span>
-      </div>
-    </div>
-  )
+        </InputGroupText>
+      </InputGroupAppend>
+    </InputGroup>
+  );
 }
+
+
+
 
 
 const Home = () => {
@@ -231,7 +234,7 @@ const Home = () => {
   const [selectedDate, setDate] = useState(null);
   const [module, setModules] = useState([]);
   const [day, setDay] = useState('');
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false)
 
   // Get today's day when the component mounts
   useEffect(() => {
@@ -284,61 +287,43 @@ const Home = () => {
   }
 
 
-useEffect(() => {
-  if (demoDatas1) {
-    const filteredModules = demoDatas1
-      .filter((li) => li.modules && li.modules.length > 0) // Ensure modules exist and have elements
-      .map((li) => li.modules[0]); // Get the first element of each module array
+  useEffect(() => {
+    if (demoDatas1) {
+      const filteredModules = demoDatas1
+        .filter((li) => li.modules && li.modules.length > 0) // Ensure modules exist and have elements
+        .map((li) => li.modules[0]); // Get the first element of each module array
 
-    setModules(filteredModules); // Set the modules as the array of first elements
-  }
-}, [demoDatas1]);
+      setModules(filteredModules); // Set the modules as the array of first elements
+    }
+  }, [demoDatas1]);
 
-  function filterModule(value){
+  function filterModule(value) {
     const moduleBatch = demoDatas1.filter((li) => {
-     
-     const data= li.modules.filter((innerData)=>{
-       return innerData.module_name==value
-      })      
-      return data[0]?.module_name==value
+
+      const data = li.modules.filter((innerData) => {
+        return innerData.module_name == value
+      })
+      return data[0]?.module_name == value
     })
     setDemoDatas(moduleBatch)
   }
-  
+
 
   return (
-    <MDBContainer fluid>
 
-      <Navsection1>
-        <Leftside>
-          <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPgJPgAp_4zvcBBWIgWfIfbTo5qYymSC1T6djE5sijLRq2hGOfQpR-FOvac0cGcc_0vVc&usqp=CAU'></Image>
-          <Searchbar>
-            <Input type='search' placeholder='Search batches'></Input>
-            <MDBIcon className='m-2 gray-icon' fas icon="search" size='lg' />
-          </Searchbar>
-        </Leftside>
-        <Rightside>
-          <MDBDropdown>
-            <MDBDropdownToggle style={{ fontSize: '14px', fontFamily: 'Arial, sans-serif' }} className='text-dark  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
-              {day}
-            </MDBDropdownToggle>
-          </MDBDropdown>
-          <Button>
-Logout  
-          </Button>
-        </Rightside>
-      </Navsection1>
+    <MDBContainer fluid>
+      <Navbar1 day={day}/>
       <Navsection2>
         <Leftside2>
           {/* <label style={{ marginLeft: "10px" }} htmlFor=""> */}
           <Datepicker selected={selectedDate} onChange={date => setDate(date)} customInput={<CustomInput />} />
           {/* </label> */}
           <MDBDropdown>
-            <MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }} className='text-white  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
+            <DropDown className='text-white  bg-transparent border-0  py-2 px-4 shadow-none border'>
               Select Mentor
-            </MDBDropdownToggle>
+            </DropDown>
             <MDBDropdownMenu>
-            {demoDatas1
+              {demoDatas1
                 ?.filter((li, index, self) => index === self.findIndex((t) => t.mentor === li.mentor))
                 .map((li, index) => (
                   <MDBDropdownItem link key={index} onClick={() => filterMentor(li.mentor)}>{li.mentor}</MDBDropdownItem>
@@ -346,11 +331,11 @@ Logout
             </MDBDropdownMenu>
           </MDBDropdown>
           <MDBDropdown>
-            <MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }} className='text-white  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
-              Select Course
-            </MDBDropdownToggle>
+            <DropDown className='text-white  bg-transparent border-0 py-2 px-4 shadow-none border'>
+              Select course
+            </DropDown>
             <MDBDropdownMenu>
-            {module
+              {module
                 ?.filter((li, index, self) => index === self.findIndex((t) => t.module_name === li.module_name))
                 .map((li, index) => (
                   <MDBDropdownItem link key={index} onClick={() => filterModule(li.module_name)}>{li.module_name}</MDBDropdownItem>
@@ -362,64 +347,68 @@ Logout
 
           <Titles>
             <MDBIcon fas icon="home" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/home'}>Home</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/home'}>Home</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="graduation-cap" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/student'}>Student</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/student'}>Student</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="book-reader" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/#'}>Mentor</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/#'}>Mentor</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="users" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/batch'}>Batches</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/batch'}>Batches</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="headset" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/#'}>Chat</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/#'}>Chat</Link>
           </Titles>
         </Rightside2>
 
       </Navsection2>
-      {loading ?
+      <Message>
+        {loading ?
 
-      <Loader/>
-      
-      
-      :demoDatas1
-  ?.filter((li, index, self) => index === self.findIndex((t) => t.mentor === li.mentor)) // Get unique mentors
-  .sort((a, b) => a.mentor.localeCompare(b.mentor)) // Sort mentors alphabetically
-  .map((mentorData, index) => (
-    <Content className='container' key={index}>
-      {demoDatas // Map over all batches but only display those with the same mentor
-        .filter((batch) => batch.mentor === mentorData.mentor)
-        .map((li) => (
-          <SubMain key={li._id}>
-            <Link style={{ textDecoration: 'none' }} to={`/singlebatch/${li._id}`}>
-              <MDBCard style={{ boxShadow: '0 0 -10px 20px #411B66' }}>
-                <MDBCardBody>
-                  <MDBCardTitle className='fs-5'>{li.name}</MDBCardTitle>
-                  <MDBCardText className='text-dark'>{li.mentor}</MDBCardText>
-                  <MDBCardText className='text-secondary'>
-                    {li.batch_code}
-                    <br />
-                    <MDBIcon fas icon="clock" /> {li.start_time} to {li.end_time}
-                  </MDBCardText>
-                  <MDBCardText className='text-secondary'>
-                    <MDBIcon fas icon="plus" className='text-success' /> {li.student_details.length} students
-                    <br />
-                  </MDBCardText>
-                </MDBCardBody>
-              </MDBCard>
-            </Link>
-          </SubMain>
-        ))}
-    </Content>
-  ))
-}
+          <Loading />
 
+
+          : demoDatas1
+            ?.filter((li, index, self) => index === self.findIndex((t) => t.mentor === li.mentor)) // Get unique mentors
+            .sort((a, b) => a.mentor.localeCompare(b.mentor)) // Sort mentors alphabetically
+            .map((mentorData, index) => (
+              <Content className='container' key={index}>
+                {demoDatas // Map over all batches but only display those with the same mentor
+                  .filter((batch) => batch.mentor === mentorData.mentor)
+                  .map((li) => (
+                    <SubMain key={li._id}>
+
+                      <Link style={{ textDecoration: 'none' }} to={`/singlebatch/${li._id}`}>
+                        <GlobalStyle />
+                        <AnimatedCard>
+                          <MDBCardBody>
+                            <CardTitle className='fs-5'>{li.name}</CardTitle>
+                            <CardText >{li.mentor}</CardText>
+                            <CardText >
+                              {li.batch_code}
+                              <br />
+                              <MDBIcon fas icon="clock" /> {li.start_time} to {li.end_time}
+                            </CardText>
+                            <CardText >
+                              <MDBIcon fas icon="plus" className='text-success' /> {li.student_details.length} students
+                              <br />
+                            </CardText>
+                          </MDBCardBody>
+                        </AnimatedCard>
+                      </Link>
+                    </SubMain>
+                  ))}
+              </Content>
+            ))
+
+        }
+      </Message>
     </MDBContainer>
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBCard, MDBCardImage, MDBCardBody, MDBCardTitle, MDBCardText, MDBListGroup, MDBListGroupItem, MDBCardLink, MDBRow, MDBCol, MDBInput, MDBCheckbox, MDBIcon } from 'mdb-react-ui-kit';
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBCard, MDBCardImage, MDBCardBody, MDBCardTitle, MDBCardText, MDBListGroup, MDBListGroupItem, MDBCardLink, MDBRow, MDBCol, MDBInput, MDBCheckbox, MDBIcon, MDBRadio, MDBTextArea } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import styled,{keyframes} from 'styled-components';
@@ -97,6 +97,18 @@ const Loader = styled.div`
   }
 `;
 
+
+const StyledModal = styled(MDBModal)`
+  .modal-dialog-scrollable {
+    max-height: 90vh; /* Make sure the modal dialog fits the viewport */
+    overflow-y: auto; /* Enable vertical scroll */
+  }
+
+  .modal-content {
+    max-height: 80vh; /* Limit modal content height */
+    overflow-y: auto; /* Enable vertical scrolling inside modal */
+  }
+`
 const Singlebatch = () => {
   const [Batchdetails, setBatchdetails] = useState([]);
   const [StudentDetails, setStudentDetails] = useState([]);
@@ -282,46 +294,108 @@ setLoading(true)
                   </MDBModal>
                   )}
                    {updateModal && (
-                  <MDBModal open={updateModal} onClose={() => setupdatedModal(false)} backdrop={false}>
+                  <StyledModal  open={updateModal} onClose={() => setupdatedModal(false)} backdrop={false}>
                         {loading1 ? (
                         <Loader/>  // Show loader if data is still being fetched
                       ) : (
                     <MDBModalDialog centered>
                       <MDBModalContent>
                         <MDBModalHeader>
-                          <MDBModalTitle>Profile</MDBModalTitle>
                           <MDBBtn className='btn-close' color='none' onClick={updateToggleOpen}></MDBBtn>
                         </MDBModalHeader>
                         <MDBModalBody>
-                          <MDBCard>
-                            <MDBCardImage style={{ width: '200px', height: '200px' }} position='top' alt='...' src='https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg' />
-                            <form>
-      <MDBRow className='mb-4'>
-        <MDBCol>
-          <MDBInput id='form3Example1' label='First name' />
-        </MDBCol>
-        <MDBCol>
-          <MDBInput id='form3Example2' label='Last name' />
-        </MDBCol>
-      </MDBRow>
-      <MDBInput className='mb-4' type='email' id='form3Example3' label='Email address' />
-      <MDBInput className='mb-4' type='password' id='form3Example4' label='Password' />
+         
+
+        <MDBCardBody className='px-4'>
+          <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Registration Form</h3>
+
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='First Name' size='lg' id='form1' type='text'/>
+            </MDBCol>
+
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Last Name' size='lg' id='form2' type='text'/>
+            </MDBCol>
+          </MDBRow>
+
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Date of birth' size='lg' id='form3' type='date'/>
+            </MDBCol>
+
+            <MDBCol md='6' className='mb-4'>
+              <h6 className="fw-bold">Gender: </h6>
+              <MDBRadio name='inlineRadio' id='inlineRadio1' value='option1' label='Female' inline />
+              <MDBRadio name='inlineRadio' id='inlineRadio2' value='option2' label='Male' inline />
+              <MDBRadio name='inlineRadio' id='inlineRadio3' value='option3' label='Other' inline />
+            </MDBCol>
+          </MDBRow>
+
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Email' size='lg' id='form4' type='email'/>
+            </MDBCol>
+
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Phone Number' size='lg' id='form5' type='rel'/>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Joining Date' size='lg' id='form4' type='date'/>
+            </MDBCol>
+
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Duration' size='lg' id='form5' type='text'/>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Course' size='lg' id='form4' type='Course'/>
+            </MDBCol>
+
+            <MDBCol md='6'>
+            <MDBDropdown>
+            <MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }} className='text-dark  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
+               student status
+            </MDBDropdownToggle>
+            <MDBDropdownMenu>
+          
+                  <MDBDropdownItem link >Active</MDBDropdownItem>
+                  <MDBDropdownItem link >Inactive</MDBDropdownItem>
+             
+          
+            </MDBDropdownMenu>
+          </MDBDropdown>
+            </MDBCol>
+          </MDBRow>
+
+          <MDBRow>
+  <MDBTextArea
+    wrapperClass='mb-4'
+    label='Your Message'
+    id='textAreaExample'
+    rows={4} // Number of visible rows
+    placeholder='Address'
+  />
+</MDBRow>
+<MDBRow>
+<MDBInput wrapperClass='mb-4' size='lg' id='form4' type='file'/> 
+</MDBRow>
+<div className="d-flex justify-content-center">
+  <MDBBtn className='mb-4' size='sm' color='success'>Submit</MDBBtn>
+</div>
 
 
-      <MDBBtn type='submit' className='mb-4' block>
-        Update Profile
-      </MDBBtn>
+        </MDBCardBody>
 
-    </form>
-                          </MDBCard>
                         </MDBModalBody>
-                        <MDBBadge color='success' pill style={{ cursor: 'pointer', width: "100%" }}>
-                          Update
-                        </MDBBadge>
+                       
                       </MDBModalContent>
                     </MDBModalDialog>
                       )}
-                  </MDBModal>
+                  </StyledModal>
                   )}
                 </td>
                 <td>

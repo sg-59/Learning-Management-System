@@ -1,12 +1,10 @@
 import axios from 'axios'
-import { MDBBadge, MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardText, MDBCardTitle, MDBCol, MDBDropdown, MDBDropdownItem, MDBDropdownMenu, MDBDropdownToggle, MDBIcon, MDBInput, MDBListGroup, MDBListGroupItem, MDBModal, MDBModalBody, MDBModalContent, MDBModalDialog, MDBModalHeader, MDBModalTitle, MDBRow, MDBTable, MDBTableBody, MDBTableHead } from 'mdb-react-ui-kit'
+import { MDBBadge, MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardText, MDBCardTitle, MDBCol, MDBContainer, MDBDropdown, MDBDropdownItem, MDBDropdownMenu, MDBDropdownToggle, MDBIcon, MDBInput, MDBListGroup, MDBListGroupItem, MDBModal, MDBModalBody, MDBModalContent, MDBModalDialog, MDBModalHeader, MDBModalTitle, MDBRadio, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBTextArea } from 'mdb-react-ui-kit'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { styled,keyframes } from 'styled-components'
+import Loading from '../../Component/Loading'
 
-const Maindiv = styled.div`
-
-`
 const Navsection1 = styled.div`
 width: 100%;
   display: flex;
@@ -15,15 +13,29 @@ width: 100%;
   padding: 0;
   margin: 0;
 `
+
+const CustomIcon = styled(MDBIcon)`
+  color:#411B66;
+  margin: 0.5rem;
+`;
+
+const DropDown=styled(MDBDropdownToggle)`
+   font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+  color: #411B66;
+  font-size: 12px;
+`
+
 const Navsection2 = styled.div`
    display: flex;
-   padding-bottom: 5px;
+   padding: 7px;
    height: auto;
-  align-items: center;
-  z-index: 99;
-  border: .1px solid purple;
+   align-items: center;
+   z-index: 99;
   background-color: #411B66;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 
 `
 
@@ -32,8 +44,13 @@ const Input = styled.input`
   border: none;
   padding: 7px;
   border-radius: 25px;
+  outline-color: #411B66;
   &::placeholder {
-  padding-left: 5px;
+    font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+  color: #411B66;
   
   }
   &:focus{
@@ -47,19 +64,21 @@ const Leftside = styled.div`
   justify-content: flex-start;
 `
 const Rightside = styled.div`
-  width: 30%;
+  width: 20%;
   display: flex;
   align-items: center;
   justify-content:space-between ;
 `
 
+
 const Searchbar = styled.div`
-  border: .5px solid #411B66;
+  border: 2px solid #411B66;
   display: flex;
   align-items: center;
   justify-content: space-around;
   width: 50%;
   border-radius: 25px;
+  outline-color: #411B66;
  
 `
 
@@ -70,22 +89,16 @@ width: 7rem;
 
 const Button = styled.div`
   padding: 3px;
-  background-color:#411B66 ;
-  color: white;
   border-radius: 7px;
   border: 0.5px solid grey;
-  justify-content: space-around;
   margin-right: 17px;
-  font-size: 14px;
-  &:hover{
-    background-color:#572d81;
-  }
 `
+
 
 
 const Leftside2 = styled.div`
   display: flex;
-  width: 50%;
+  width: 43%;
   align-items: center;
   justify-content: space-around;
 
@@ -96,6 +109,7 @@ width: 50%;
   color: #f4e5e5;
   align-items: center;
   justify-content: flex-end;
+
 `
 const Titles = styled.div`
   display: flex;
@@ -104,6 +118,10 @@ const Titles = styled.div`
 justify-content: center;
 margin-left:3%;
 margin-right: 3%;
+font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
 `
 const TableView = styled.div`
   `
@@ -121,76 +139,33 @@ const TableView = styled.div`
     width: 30%;
   `
 
+//styledModal
 
-  //loading ...........
-
-const before8 = keyframes`
-0% {
-  width: 0.5em;
-  box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
-}
-35% {
-  width: 3.5em;
-  box-shadow: 0 -0.5em rgba(225, 20, 98, 0.75), 0 0.5em rgba(111, 202, 220, 0.75);
-}
-70% {
-  width: 0.5em;
-  box-shadow: -1em -0.5em rgba(225, 20, 98, 0.75), 1em 0.5em rgba(111, 202, 220, 0.75);
-}
-100% {
-  box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
-}
-`;
-
-const after6 = keyframes`
-0% {
-  height: 0.5em;
-  box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
-}
-35% {
-  height: 3.5em;
-  box-shadow: 0.5em 0 rgba(61, 184, 143, 0.75), -0.5em 0 rgba(233, 169, 32, 0.75);
-}
-70% {
-  height: 0.5em;
-  box-shadow: 0.5em -1em rgba(61, 184, 143, 0.75), -0.5em 1em rgba(233, 169, 32, 0.75);
-}
-100% {
-  box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
-}
-`;
-
-// Loader container
-const Loader = styled.div`
-  position: relative;
-  width: 3.5em;
-  height: 3.5em;
-  transform: rotate(165deg);
-  position: absolute;
-  top: calc(50% - 1.25em);
-  left: calc(50% - 1.25em);
-  background-color: transparent;  // Make sure background is transparent
-
-  &:before, &:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: block;
-    width: 0.5em;
-    height: 0.5em;
-    border-radius: 0.25em;
-    transform: translate(-50%, -50%);
+const StyledModal = styled(MDBModal)`
+  .modal-dialog-scrollable {
+    max-height: 90vh; /* Make sure the modal dialog fits the viewport */
+    overflow-y: auto; /* Enable vertical scroll */
   }
 
-  &:before {
-    animation: ${before8} 2s infinite;
+  .modal-content {
+    max-height: 80vh; /* Limit modal content height */
+    overflow-y: auto; /* Enable vertical scrolling inside modal */
   }
+`
 
-  &:after {
-    animation: ${after6} 2s infinite;
-  }
+const SpaceGroteskText = styled.div`
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+  color: #411B66;
 `;
+
+
+
+
+
+
 
 
 
@@ -247,7 +222,7 @@ setStudentDetails1(studentData)
   }
 
 return (
-  <Maindiv>
+  <MDBContainer fluid>
 
 
 <Navsection1>
@@ -255,25 +230,25 @@ return (
           <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPgJPgAp_4zvcBBWIgWfIfbTo5qYymSC1T6djE5sijLRq2hGOfQpR-FOvac0cGcc_0vVc&usqp=CAU'></Image>
           <Searchbar>
             <Input type='search' placeholder='Searh batches'></Input>
-            <MDBIcon className='m-2 gray-icon' fas icon="search" size='lg' />
+            <CustomIcon className='m-2 gray-icon' fas icon="search" size='lg' />
           </Searchbar>
         </Leftside>
         <Rightside>
-        <Link to={'/createstudent'} className='text-decoration-none text-success'>
-  <MDBIcon fas icon="plus-circle" /> Create student
+ 
+        <Link to={'/createstudent'} className='text-decoration-none d-flex align-items-center' style={{color:"#411B66"}} >
+  <MDBIcon fas icon="plus-circle" /><SpaceGroteskText>create student</SpaceGroteskText>
 </Link>
-
           <Button>
-Logout
+          <SpaceGroteskText>Logout</SpaceGroteskText>
           </Button>
         </Rightside>
       </Navsection1>
       <Navsection2>
         <Leftside2>
      <MDBDropdown>
-            <MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }} className='text-white  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
+            <DropDown className='text-white  bg-transparent border-0 py-2 px-4 shadow-none border'>
               Active student
-            </MDBDropdownToggle>
+            </DropDown>
             <MDBDropdownMenu>
           
                   <MDBDropdownItem link onClick={() => filterStatus('active')}>Active</MDBDropdownItem>
@@ -283,15 +258,16 @@ Logout
             </MDBDropdownMenu>
           </MDBDropdown>
           <MDBDropdown>
-            <MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }} className='text-white  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
+            <DropDown className='text-white  bg-transparent border-0 py-2 px-4 shadow-none border'>
               Select Course
-            </MDBDropdownToggle>
+            </DropDown>
             <MDBDropdownMenu>
        
                   <MDBDropdownItem></MDBDropdownItem>
                
             </MDBDropdownMenu>
           </MDBDropdown>
+
         </Leftside2>
         <Rightside2>
 
@@ -334,7 +310,7 @@ Logout
             <th scope='col'>Remove</th>
           </tr>
         </MDBTableHead>
-        {loading ? <Loader/> : StudentDetails?.filter((li, index, self) => index === self.findIndex((t) => t.status === li.status))
+        {loading ? <Loading/> : StudentDetails?.filter((li, index, self) => index === self.findIndex((t) => t.status === li.status))
         .sort((a, b) => a.first_name.localeCompare(b.first_name))
         .map((statusData,index) => (
           <MDBTableBody key={index}>
@@ -380,7 +356,7 @@ Logout
                       
                 <MDBModal open={centredModal} onClose={toggleOpen} backdrop={false}>
                    {loading1 ? (
-                        <Loader/>  // Show loader if data is still being fetched
+                       <Loading/> // Show loader if data is still being fetched
                       ) : (
                   <MDBModalDialog centered>
              
@@ -420,46 +396,108 @@ Logout
                 </MDBModal>
                 )}
                   {updateModal && (
-                  <MDBModal  open={updateModal} onClose={() => setupdatedModal(false)} backdrop={false}>
+                  <StyledModal  open={updateModal} onClose={() => setupdatedModal(false)} backdrop={false}>
                         {loading1 ? (
-                        <Loader/>  // Show loader if data is still being fetched
+                        <Loading/>  // Show loader if data is still being fetched
                       ) : (
                     <MDBModalDialog centered>
                       <MDBModalContent>
                         <MDBModalHeader>
-                          <MDBModalTitle>Profile</MDBModalTitle>
                           <MDBBtn className='btn-close' color='none' onClick={updateToggleOpen}></MDBBtn>
                         </MDBModalHeader>
                         <MDBModalBody>
-                          <MDBCard>
-                            <MDBCardImage style={{ width: '200px', height: '200px' }} position='top' alt='...' src='https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg' />
-                            <form>
-      <MDBRow className='mb-4'>
-        <MDBCol>
-          <MDBInput id='form3Example1' label='First name' />
-        </MDBCol>
-        <MDBCol>
-          <MDBInput id='form3Example2' label='Last name' />
-        </MDBCol>
-      </MDBRow>
-      <MDBInput className='mb-4' type='email' id='form3Example3' label='Email address' />
-      <MDBInput className='mb-4' type='password' id='form3Example4' label='Password' />
+         
+
+        <MDBCardBody className='px-4'>
+          <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Registration Form</h3>
+
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='First Name' size='lg' id='form1' type='text'/>
+            </MDBCol>
+
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Last Name' size='lg' id='form2' type='text'/>
+            </MDBCol>
+          </MDBRow>
+
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Date of birth' size='lg' id='form3' type='date'/>
+            </MDBCol>
+
+            <MDBCol md='6' className='mb-4'>
+              <h6 className="fw-bold">Gender: </h6>
+              <MDBRadio name='inlineRadio' id='inlineRadio1' value='option1' label='Female' inline />
+              <MDBRadio name='inlineRadio' id='inlineRadio2' value='option2' label='Male' inline />
+              <MDBRadio name='inlineRadio' id='inlineRadio3' value='option3' label='Other' inline />
+            </MDBCol>
+          </MDBRow>
+
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Email' size='lg' id='form4' type='email'/>
+            </MDBCol>
+
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Phone Number' size='lg' id='form5' type='rel'/>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Joining Date' size='lg' id='form4' type='date'/>
+            </MDBCol>
+
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Duration' size='lg' id='form5' type='text'/>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <MDBCol md='6'>
+              <MDBInput wrapperClass='mb-4' label='Course' size='lg' id='form4' type='Course'/>
+            </MDBCol>
+
+            <MDBCol md='6'>
+            <MDBDropdown>
+            <MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif' }} className='text-dark  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
+               student status
+            </MDBDropdownToggle>
+            <MDBDropdownMenu>
+          
+                  <MDBDropdownItem link >Active</MDBDropdownItem>
+                  <MDBDropdownItem link >Inactive</MDBDropdownItem>
+             
+          
+            </MDBDropdownMenu>
+          </MDBDropdown>
+            </MDBCol>
+          </MDBRow>
+
+          <MDBRow>
+  <MDBTextArea
+    wrapperClass='mb-4'
+    label='Your Message'
+    id='textAreaExample'
+    rows={4} // Number of visible rows
+    placeholder='Address'
+  />
+</MDBRow>
+<MDBRow>
+<MDBInput wrapperClass='mb-4' size='lg' id='form4' type='file'/> 
+</MDBRow>
+<div className="d-flex justify-content-center">
+  <MDBBtn className='mb-4' size='sm' color='success'>Submit</MDBBtn>
+</div>
 
 
-      <MDBBtn type='submit' className='mb-4' block>
-        Update Profile
-      </MDBBtn>
+        </MDBCardBody>
 
-    </form>
-                          </MDBCard>
                         </MDBModalBody>
-                        <MDBBadge color='success' pill style={{ cursor: 'pointer', width: "100%" }}>
-                          Update
-                        </MDBBadge>
+                       
                       </MDBModalContent>
                     </MDBModalDialog>
                       )}
-                  </MDBModal>
+                  </StyledModal>
                   )}
               </td>
               <td>
@@ -473,7 +511,7 @@ Logout
         ))}
       </MDBTable>
     </TableView>
-  </Maindiv>
+  </MDBContainer>
 );
 }
 
