@@ -3,7 +3,7 @@ import Datepicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCalendarAlt } from 'react-icons/fa'
-import { styled,keyframes } from 'styled-components'
+import { styled,keyframes, createGlobalStyle } from 'styled-components'
 import { MDBDropdown, MDBDropdownMenu, MDBDropdownToggle, MDBDropdownItem, MDBIcon, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBBtn, MDBSpinner, MDBContainer, } from 'mdb-react-ui-kit';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
@@ -11,8 +11,7 @@ import Loading from '../../Component/Loading';
 import Navbar1 from '../../Component/Navbar1';
 
 
-
-const DropDown=styled(MDBDropdownToggle)`
+const DropDown = styled(MDBDropdownToggle)`
    font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
   font-weight:400; /* Default weight can be set here */
@@ -20,30 +19,39 @@ const DropDown=styled(MDBDropdownToggle)`
   color: #411B66;
   font-size: 12px;
 `
-const CardTitle=styled(MDBCardTitle)`
+const CardTitle = styled(MDBCardTitle)`
     font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
   font-weight:400; /* Default weight can be set here */
   font-style: normal;
   color: #411B66;
 `
-
-const CardText=styled(MDBCardText)`
+const CardText = styled(MDBCardText)`
       font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
   font-weight:400; /* Default weight can be set here */
   font-style: normal;
   color: #411B66;
 `
-
 const Navsection2 = styled.div`
    display: flex;
    padding: 7px;
    height: auto;
    align-items: center;
    z-index: 99;
-  background-color: #411B66;
+   /* background: linear-gradient(135deg, #411B66, #8B4CAF); */
+   background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
+   border-radius: 10px 10px 0 0;
+   justify-content: space-between;
 
+
+`
+
+const Message = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
+  padding: 1px;
 
 `
 
@@ -56,42 +64,77 @@ const Content = styled.div`
   overflow-x: scroll; 
   -ms-overflow-style: none; 
   scrollbar-width: none; 
-margin-top:25px;
+  margin: 25px;
   &::-webkit-scrollbar {
     display: none;
   }
-      
-
-`
-
+  `
 const SubMain = styled.div`
-   min-width: 30%;
-display: inline-block; 
-  margin-right: 10px;
+   min-width: 40%;
+display: inline-block;
   text-align: center;
-&:hover{
-  transition: all 1s ease;
- transform: scale(1.05);
-}
-
-   
 `
+const AnimatedCard = styled(MDBCard)`
+  position: relative;
+  overflow: hidden; /* Ensures the gradient stays within the card */
+  transition: background-color 0.5s ease;
+  background: linear-gradient(135deg, #e5deeb, rgba(255, 255, 255, 1));
+  margin-left: 45px;
+  margin-right: 45px;
+  &:hover {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(231, 207, 250, 0.3), rgba(209, 229, 252, 0.3)); /* Overlay color */
+      animation: slide 0.5s forwards; /* Animation for slide effect */
+    }
+  }
+`;
+
+// Keyframes for the slide animation
+const slideAnimation = `
+  @keyframes slide {
+    0% {
+      top: -100%; /* Start above the card */
+      left: 0; /* Align to the left */
+      height: 0; /* No height initially */
+      width: 100%; /* Full width */
+    }
+    100% {
+      top: 0; /* Move to the top of the card */
+      left: 0; /* Align to the left */
+      height: 100%; /* Full height */
+      width: 100%; /* Full width */
+    }
+  }
+`;
+
+
+// Define a global style for keyframes
+const GlobalStyle = createGlobalStyle`
+  ${slideAnimation}
+`;
 
 const Leftside2 = styled.div`
   display: flex;
-  width: 43%;
+  width: 40%;
   align-items: center;
   justify-content: space-around;
-  margin-left: 75px;
+ margin-left: 85px;
 
 `
 const Rightside2 = styled.div`
-width: 43%;
+width: 40%;
   display: flex;
-  color: #f4e5e5;
+  color: #411B66;
   align-items: center;
   justify-content: flex-end;
- 
+  margin-right: 67px;
+
 `
 const Titles = styled.div`
   display: flex;
@@ -105,6 +148,7 @@ font-family: "Space Grotesk", sans-serif;
   font-weight:400; /* Default weight can be set here */
   font-style: normal;
 `
+
 const InputGroup = styled.div`
   display: flex;
   align-items: center;
@@ -314,29 +358,30 @@ setLoading(false)
         </Leftside2>
         <Rightside2>
 
-          <Titles>
+        <Titles>
             <MDBIcon fas icon="home" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/home'}>Home</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/home'}>Home</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="graduation-cap" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/student'}>Student</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/student'}>Student</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="book-reader" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/#'}>Mentor</Link>
-          </Titles >
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/#'}>Mentor</Link>
+          </Titles>
           <Titles>
             <MDBIcon fas icon="users" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/batch'}>Batches</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/batch'}>Batches</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="headset" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/#'}>Chat</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/#'}>Chat</Link>
           </Titles>
         </Rightside2>
 
       </Navsection2>
+      <Message>
 {loading ?
 
 <Loading/>
@@ -351,7 +396,8 @@ setLoading(false)
         .map((li) => (
           <SubMain key={li._id}>
             <Link style={{ textDecoration: 'none' }} to={`/singlebatch/${li._id}`}>
-              <MDBCard>
+            <GlobalStyle/>
+              <AnimatedCard>
                 <MDBCardBody>
                   <CardTitle className='fs-5'>{li.name}</CardTitle>
                   <CardText>{li.mentor}</CardText>
@@ -365,14 +411,14 @@ setLoading(false)
                     <br />
                   </CardText>
                 </MDBCardBody>
-              </MDBCard>
+              </AnimatedCard>
             </Link>
           </SubMain>
         ))}
     </Content>
   ))
 }
-
+</Message>
     </MDBContainer>
 
   )

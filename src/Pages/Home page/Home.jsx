@@ -75,7 +75,7 @@ const Content = styled.div`
   }
   `
 const SubMain = styled.div`
-   min-width: 30%;
+   min-width: 40%;
 display: inline-block;
   text-align: center;
 `
