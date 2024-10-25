@@ -208,6 +208,30 @@ const InputGroupText = styled.span`
   }
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;  /* Start fully transparent */
+    transform: translateY(-20px); /* Move slightly upwards */
+  }
+  to {
+    opacity: 1;  /* End fully opaque */
+    transform: translateY(0); /* Return to original position */
+  }
+`;
+
+const Holiday = styled.h1`
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700; /* Default weight can be set here */
+  font-style: normal;
+  color:#411B66 ;
+  position: absolute;
+  top: 50vh;
+  left: 40%;
+  font-size: 50px;
+  animation: ${fadeIn} 1s ease-in-out; /* Apply the animation */
+`;
+
 function CustomInput({ value, onClick }) {
   return (
     <InputGroup>
@@ -374,7 +398,7 @@ const Home = () => {
           <Loading />
 
 
-          : demoDatas1
+          : day=='Sunday'?<Holiday>Today is Holiday</Holiday> : demoDatas1
             ?.filter((li, index, self) => index === self.findIndex((t) => t.mentor === li.mentor)) // Get unique mentors
             .sort((a, b) => a.mentor.localeCompare(b.mentor)) // Sort mentors alphabetically
             .map((mentorData, index) => (
