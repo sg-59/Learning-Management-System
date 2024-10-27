@@ -4,22 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { styled,keyframes } from 'styled-components'
 import Loading from '../../Component/Loading'
+import Navbar1 from '../../Component/Navbar1'
 
-const Navsection1 = styled.div`
-width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-`
-
-const CustomIcon = styled(MDBIcon)`
-  color:#411B66;
-  margin: 0.5rem;
-`;
-
-const DropDown=styled(MDBDropdownToggle)`
+const DropDown = styled(MDBDropdownToggle)`
    font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
   font-weight:400; /* Default weight can be set here */
@@ -28,87 +15,34 @@ const DropDown=styled(MDBDropdownToggle)`
   font-size: 12px;
 `
 
+
 const Navsection2 = styled.div`
    display: flex;
    padding: 7px;
    height: auto;
    align-items: center;
    z-index: 99;
-  background-color: #411B66;
-  margin-bottom: 25px;
-
+   /* background: linear-gradient(135deg, #411B66, #8B4CAF); */
+   background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
+   border-radius: 10px 10px 0 0;
+   justify-content: space-between;
+   margin-bottom: 25px;
 `
-
-const Input = styled.input`
-  width: 100%;
-  border: none;
-  padding: 7px;
-  border-radius: 25px;
-  outline-color: #411B66;
-  &::placeholder {
-    font-family: "Space Grotesk", sans-serif;
-  font-optical-sizing: auto;
-  font-weight:400; /* Default weight can be set here */
-  font-style: normal;
-  color: #411B66;
-  
-  }
-  &:focus{
-outline: none;
-  }
-`
-const Leftside = styled.div`
-  width: 70%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`
-const Rightside = styled.div`
-  width: 20%;
-  display: flex;
-  align-items: center;
-  justify-content:space-between ;
-`
-
-
-const Searchbar = styled.div`
-  border: 2px solid #411B66;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 50%;
-  border-radius: 25px;
-  outline-color: #411B66;
- 
-`
-
-const Image = styled.img`
-width: 7rem;
-
-`
-
-const Button = styled.div`
-  padding: 3px;
-  border-radius: 7px;
-  border: 0.5px solid grey;
-  margin-right: 17px;
-`
-
-
-
 const Leftside2 = styled.div`
   display: flex;
-  width: 43%;
+  width: 40%;
   align-items: center;
   justify-content: space-around;
+ margin-left: 67px;
 
 `
 const Rightside2 = styled.div`
-width: 50%;
+width: 40%;
   display: flex;
-  color: #f4e5e5;
+  color: #411B66;
   align-items: center;
   justify-content: flex-end;
+  margin-right: 67px;
 
 `
 const Titles = styled.div`
@@ -124,19 +58,6 @@ font-family: "Space Grotesk", sans-serif;
   font-style: normal;
 `
 const TableView = styled.div`
-  `
-  const CreateStudent=styled.div`
-    background-color: #411B66;
-    color: white;
-    padding: 3px;
-    border-radius: 7px;
-    border: 0.5px solid grey;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 30%;
   `
 
 //styledModal
@@ -156,14 +77,18 @@ const StyledModal = styled(MDBModal)`
 const SpaceGroteskText = styled.div`
   font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
-  font-weight:400; /* Default weight can be set here */
+  font-weight:300; /* Default weight can be set here */
   font-style: normal;
-  color: #411B66;
+  color: white;
+  cursor: pointer;
 `;
 
 
 
+const TableRow=styled.tr`
+    background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
 
+`
 
 
 
@@ -179,6 +104,7 @@ const Student = () => {
   const [loading1, setLoading1] = useState(false);  // Loader state for the modal
   const [centredModal, setCentredModal] = useState(false);
   const [updateModal, setupdatedModal] = useState(false);
+  const [activestatus,setActiveStatus]=useState('All')
   const toggleOpen = (id) => {
     console.log("where is id", id);
     setCentredModal(!centredModal);
@@ -195,6 +121,7 @@ const Student = () => {
     }
   };
 
+
   useEffect(() => {
     setLoading(true);
     axios.get(`https://futuralab-lms.onrender.com/student`, { headers: { 'x-organization-id': 'org1db' } })
@@ -205,15 +132,24 @@ const Student = () => {
         setStudentDetails1(data.data.data);
         setLoading(false);
       }).catch(() => setLoading(false));
+
   }, []);
+
+
 
   function filterStatus(value){
 console.log("value in status",value);
-const studentData=StudentDetails.filter((li)=>{
-  return li.status==value
-})
+setActiveStatus(value)
+if(value=='all'){
+  setStudentDetails1(StudentDetails)
+}else{
+  const studentData=StudentDetails.filter((li)=>{
+    return li.status==value
+  })
+  
+  setStudentDetails1(studentData)
+}
 
-setStudentDetails1(studentData)
   }
 
   
@@ -223,36 +159,19 @@ setStudentDetails1(studentData)
 
 return (
   <MDBContainer fluid>
-
-
-<Navsection1>
-        <Leftside>
-          <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPgJPgAp_4zvcBBWIgWfIfbTo5qYymSC1T6djE5sijLRq2hGOfQpR-FOvac0cGcc_0vVc&usqp=CAU'></Image>
-          <Searchbar>
-            <Input type='search' placeholder='Searh batches'></Input>
-            <CustomIcon className='m-2 gray-icon' fas icon="search" size='lg' />
-          </Searchbar>
-        </Leftside>
-        <Rightside>
- 
-        <Link to={'/createstudent'} className='text-decoration-none d-flex align-items-center' style={{color:"#411B66"}} >
-  <MDBIcon fas icon="plus-circle" /><SpaceGroteskText>create student</SpaceGroteskText>
-</Link>
-          <Button>
-          <SpaceGroteskText>Logout</SpaceGroteskText>
-          </Button>
-        </Rightside>
-      </Navsection1>
+    <Navbar1/>
       <Navsection2>
         <Leftside2>
+      <Link style={{textDecoration:"none"}} to={'/createstudent'}><SpaceGroteskText>+ create student</SpaceGroteskText></Link>
      <MDBDropdown>
             <DropDown className='text-white  bg-transparent border-0 py-2 px-4 shadow-none border'>
-              Active student
+        {activestatus} students
             </DropDown>
             <MDBDropdownMenu>
           
                   <MDBDropdownItem link onClick={() => filterStatus('active')}>Active</MDBDropdownItem>
                   <MDBDropdownItem link  onClick={() => filterStatus('inactive')}>Inactive</MDBDropdownItem>
+                  <MDBDropdownItem link  onClick={() => filterStatus('all')}>All</MDBDropdownItem>
              
           
             </MDBDropdownMenu>
@@ -273,23 +192,23 @@ return (
 
           <Titles>
             <MDBIcon fas icon="home" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/home'}>Home</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/home'}>Home</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="graduation-cap" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/student'}>Student</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/student'}>Student</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="book-reader" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/#'}>Mentor</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/#'}>Mentor</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="users" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/batch'}>Batches</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/batch'}>Batches</Link>
           </Titles>
           <Titles>
             <MDBIcon fas icon="headset" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/#'}>Chat</Link>
+            <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/#'}>Chat</Link>
           </Titles>
         </Rightside2>
 
@@ -310,13 +229,13 @@ return (
             <th scope='col'>Remove</th>
           </tr>
         </MDBTableHead>
-        {loading ? <Loading/> : StudentDetails?.filter((li, index, self) => index === self.findIndex((t) => t.status === li.status))
-        .sort((a, b) => a.first_name.localeCompare(b.first_name))
+       
+        {loading ? <Loading/> : StudentDetails?.filter((li, index, self) =>index === self.findIndex((t) => t.status === li.status))
         .map((statusData,index) => (
           <MDBTableBody key={index}>
-            {StudentDetails1.filter((status)=>status.status==statusData.status).map((li)=>(
+            {StudentDetails1.filter((status)=>status.status==statusData.status).map((li,rowindex)=>(
             <tr>
-              <td>
+              <td >
                 <div className={li.status === "active" ? 'bg-success' : "bg-danger"} style={{ width: "15px", height: "15px", borderRadius: '15px', float: "left" }}></div>
                 <div className='d-flex align-items-center'>
                   <img

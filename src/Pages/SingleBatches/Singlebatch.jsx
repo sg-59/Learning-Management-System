@@ -2,101 +2,56 @@ import React, { useEffect, useState } from 'react'
 
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBCard, MDBCardImage, MDBCardBody, MDBCardTitle, MDBCardText, MDBListGroup, MDBListGroupItem, MDBCardLink, MDBRow, MDBCol, MDBInput, MDBCheckbox, MDBIcon, MDBRadio, MDBTextArea } from 'mdb-react-ui-kit';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled,{keyframes} from 'styled-components';
+import Loading from '../../Component/Loading';
+import Navbar1 from '../../Component/Navbar1';
 
-const Navbar = styled.div`
-  width: 100%;
-padding: 1rem;
-  background-color: #411B66;
-  margin-bottom: 5em;
+const Navsection2 = styled.div`
+   display: flex;
+   padding: 7px;
+   height: auto;
+   align-items: center;
+   z-index: 99;
+   /* background: linear-gradient(135deg, #411B66, #8B4CAF); */
+   background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
+   border-radius: 10px 10px 0 0;
+   justify-content: space-between;
+   margin-bottom: 25px;
+   position: sticky;
+   top: 0;
+`
+const Leftside2 = styled.div`
   display: flex;
+  width: 40%;
   align-items: center;
-`
+  justify-content: space-around;
+ margin-left: 67px;
 
-const Left = styled.div`
-  width: 50%;
 `
-const Right = styled.div`
-  width: 50%;
+const Rightside2 = styled.div`
+width: 40%;
   display: flex;
+ color: #411B66;
   align-items: center;
   justify-content: flex-end;
+  margin-right: 67px;
+
+`
+const Titles = styled.div`
+  display: flex;
+  flex-direction: row;
+ align-items: center;
+justify-content: center;
+margin-left:3%;
+margin-right: 3%;
+font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
 `
 const TableView = styled.div`
- 
-`
-
-
-//loading ...........
-
-const before8 = keyframes`
-  0% {
-    width: 0.5em;
-    box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
-  }
-  35% {
-    width: 3.5em;
-    box-shadow: 0 -0.5em rgba(225, 20, 98, 0.75), 0 0.5em rgba(111, 202, 220, 0.75);
-  }
-  70% {
-    width: 0.5em;
-    box-shadow: -1em -0.5em rgba(225, 20, 98, 0.75), 1em 0.5em rgba(111, 202, 220, 0.75);
-  }
-  100% {
-    box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
-  }
-`;
-
-const after6 = keyframes`
-  0% {
-    height: 0.5em;
-    box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
-  }
-  35% {
-    height: 3.5em;
-    box-shadow: 0.5em 0 rgba(61, 184, 143, 0.75), -0.5em 0 rgba(233, 169, 32, 0.75);
-  }
-  70% {
-    height: 0.5em;
-    box-shadow: 0.5em -1em rgba(61, 184, 143, 0.75), -0.5em 1em rgba(233, 169, 32, 0.75);
-  }
-  100% {
-    box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
-  }
-`;
-
-// Loader container
-const Loader = styled.div`
-  position: relative;
-  width: 3.5em;
-  height: 3.5em;
-  transform: rotate(165deg);
-  position: absolute;
-  top: calc(50% - 1.25em);
-  left: calc(50% - 1.25em);
-  
-  &:before, &:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: block;
-    width: 0.5em;
-    height: 0.5em;
-    border-radius: 0.25em;
-    transform: translate(-50%, -50%);
-  }
-
-  &:before {
-    animation: ${before8} 2s infinite;
-  }
-
-  &:after {
-    animation: ${after6} 2s infinite;
-  }
-`;
-
+  `
 
 const StyledModal = styled(MDBModal)`
   .modal-dialog-scrollable {
@@ -164,40 +119,58 @@ setLoading(true)
 
   return (
     <>
-      <Navbar>
-        <Left></Left>
-        <Right>
-          <MDBDropdown>
-            <MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', marginLeft: "20px" }} className='text-white  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
-              Update and Delete
-            </MDBDropdownToggle>
-            <MDBDropdownMenu>
-              <MDBDropdownItem link>Update</MDBDropdownItem>
-              <MDBDropdownItem link>Delete</MDBDropdownItem>
-            </MDBDropdownMenu>
-          </MDBDropdown>
-          <MDBDropdown>
-            <MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', marginLeft: "20px" }} className='text-white  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
-              Change schedule time & date
-            </MDBDropdownToggle>
-            <MDBDropdownMenu>
-              {/* <MDBDropdownItem link>Option 1</MDBDropdownItem>
-        <MDBDropdownItem link>Option 2</MDBDropdownItem> */}
+      <Navsection2>
+        <Leftside2>
+        <MDBDropdown>
+<MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', marginLeft: "20px" }} className='text-white  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
+  Update and Delete
+</MDBDropdownToggle>
+<MDBDropdownMenu>
+  <MDBDropdownItem link>Update</MDBDropdownItem>
+  <MDBDropdownItem link>Delete</MDBDropdownItem>
+</MDBDropdownMenu>
+</MDBDropdown>
+<MDBDropdown>
+<MDBDropdownToggle style={{ fontSize: '12px', fontFamily: 'Arial, sans-serif', marginLeft: "20px" }} className='text-white  bg-transparent border-0 mt-3 py-2 px-4 shadow-none border'>
+  Change schedule time & date
+</MDBDropdownToggle>
+<MDBDropdownMenu>
+  <MDBDropdown>
+    <MDBDropdownToggle className='dropdown-item text-dark bg-light border-0'>
+      Select Batch code
+    </MDBDropdownToggle>
+    <MDBDropdownMenu>
+      <MDBDropdownItem link>Batch code 1</MDBDropdownItem>
+      <MDBDropdownItem link>Batch code 2</MDBDropdownItem>
+    </MDBDropdownMenu>
+  </MDBDropdown>
+</MDBDropdownMenu>
+</MDBDropdown>
+        </Leftside2>
+        <Rightside2>
 
-              {/* Nested Dropdown */}
-              <MDBDropdown>
-                <MDBDropdownToggle className='dropdown-item text-dark bg-light border-0'>
-                  Select Batch code
-                </MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  <MDBDropdownItem link>Batch code 1</MDBDropdownItem>
-                  <MDBDropdownItem link>Batch code 2</MDBDropdownItem>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-            </MDBDropdownMenu>
-          </MDBDropdown>
-        </Right>
-      </Navbar>
+<Titles>
+  <MDBIcon fas icon="home" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/home'}>Home</Link>
+</Titles>
+<Titles>
+  <MDBIcon fas icon="graduation-cap" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/student'}>Student</Link>
+</Titles>
+<Titles>
+  <MDBIcon fas icon="book-reader" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/#'}>Mentor</Link>
+</Titles>
+<Titles>
+  <MDBIcon fas icon="users" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/batch'}>Batches</Link>
+</Titles>
+<Titles>
+  <MDBIcon fas icon="headset" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#411B66", margin: "3px" }} to={'/#'}>Chat</Link>
+</Titles>
+</Rightside2>
+      </Navsection2>
       <TableView className='container'>
         <MDBTable
           align='middle'>
@@ -213,7 +186,7 @@ setLoading(true)
               <th scope='col'>Remove</th>
             </tr>
           </MDBTableHead>
-          {loading ? <Loader/>
+          {loading ? <Loading/>
           
           :StudentDetails?.map((li) => (
             <MDBTableBody >
@@ -259,7 +232,7 @@ setLoading(true)
                   {centredModal && (
                   <MDBModal open={centredModal} onClose={() => setCentredModal(false)} backdrop={false}>
                         {loading1 ? (
-                        <Loader/>  // Show loader if data is still being fetched
+                        <Loading/>  // Show loader if data is still being fetched
                       ) : (
                     <MDBModalDialog centered>
                       <MDBModalContent>
@@ -296,7 +269,7 @@ setLoading(true)
                    {updateModal && (
                   <StyledModal  open={updateModal} onClose={() => setupdatedModal(false)} backdrop={false}>
                         {loading1 ? (
-                        <Loader/>  // Show loader if data is still being fetched
+                        <Loading/>  // Show loader if data is still being fetched
                       ) : (
                     <MDBModalDialog centered>
                       <MDBModalContent>
@@ -418,3 +391,8 @@ setLoading(true)
 }
 
 export default Singlebatch
+
+
+
+
+

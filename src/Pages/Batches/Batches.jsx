@@ -70,7 +70,7 @@ const Content = styled.div`
   }
   `
 const SubMain = styled.div`
-   min-width: 40%;
+   min-width: 34%;
 display: inline-block;
   text-align: center;
 `
@@ -89,8 +89,8 @@ const AnimatedCard = styled(MDBCard)`
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, rgba(231, 207, 250, 0.3), rgba(209, 229, 252, 0.3)); /* Overlay color */
-      animation: slide 0.5s forwards; /* Animation for slide effect */
+      background: linear-gradient(135deg, rgba(216, 231, 248, 0.3), rgba(209, 229, 252, 0.3)); /* Overlay color */
+      animation: slide 0.7s forwards; /* Animation for slide effect */
     }
   }
 `;
@@ -120,11 +120,11 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Leftside2 = styled.div`
-  display: flex;
-  width: 40%;
+display: flex;
+  width: 60%;
   align-items: center;
   justify-content: space-around;
- margin-left: 85px;
+  margin-left: 69px;
 
 `
 const Rightside2 = styled.div`
@@ -197,6 +197,20 @@ const InputGroupText = styled.span`
   &:hover {
     color: #007bff; /* Change icon color on hover */
   }
+`;
+
+
+const SpaceGroteskText = styled.div`
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+  color: #f5f5f5;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+
 `;
 
 
@@ -318,6 +332,9 @@ setLoading(false)
           {/* <label style={{ marginLeft: "10px" }} htmlFor=""> */}
           <Datepicker selected={selectedDate} onChange={date => setDate(date)} customInput={<CustomInput />} />
           {/* </label> */}
+          <Link style={{textDecoration:"none"}} to={'/update'}><SpaceGroteskText><span class="material-symbols-outlined m-2">
+add_card
+</span> Add New Batch</SpaceGroteskText></Link>
           <MDBDropdown>
           <DropDown className='text-white  bg-transparent border-0  py-2 px-4 shadow-none border'>
               Mentor

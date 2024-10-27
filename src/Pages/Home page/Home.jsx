@@ -10,6 +10,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 import Loading from '../../Component/Loading';
 import Navbar1 from '../../Component/Navbar1';
+import { BatchandDays } from '../../Api call/Api';
 
 
 
@@ -75,7 +76,7 @@ const Content = styled.div`
   }
   `
 const SubMain = styled.div`
-   min-width: 40%;
+   min-width: 34%;
 display: inline-block;
   text-align: center;
 `
@@ -94,8 +95,8 @@ const AnimatedCard = styled(MDBCard)`
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, rgba(231, 207, 250, 0.3), rgba(209, 229, 252, 0.3)); /* Overlay color */
-      animation: slide 0.5s forwards; /* Animation for slide effect */
+      background: linear-gradient(135deg, rgba(216, 231, 248, 0.3), rgba(209, 229, 252, 0.3)); /* Overlay color */
+      animation: slide 0.7s forwards; /* Animation for slide effect */
     }
   }
 `;
@@ -208,6 +209,9 @@ const InputGroupText = styled.span`
   }
 `;
 
+
+
+// Define keyframes for the fade-in animation
 const fadeIn = keyframes`
   from {
     opacity: 0;  /* Start fully transparent */
@@ -219,18 +223,33 @@ const fadeIn = keyframes`
   }
 `;
 
+// Define keyframes for the shining effect
+const shine = keyframes`
+  0% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 45px rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+`;
+
 const Holiday = styled.h1`
   font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700; /* Default weight can be set here */
   font-style: normal;
-  color:#411B66 ;
+  color:#411B66;
   position: absolute;
   top: 50vh;
   left: 40%;
   font-size: 50px;
-  animation: ${fadeIn} 1s ease-in-out; /* Apply the animation */
+  animation: ${fadeIn} 1s ease-in-out, ${shine} 2s ease-in-out infinite; /* Apply both animations */
 `;
+
+
 
 function CustomInput({ value, onClick }) {
   return (
@@ -281,12 +300,12 @@ const Home = () => {
     setLoading(true)
     if (day) {
       console.log("Making API call for day:", day);
-      axios.get(`https://futuralab-lms.onrender.com/batch/with-students/by-day?day=${day}`, { headers: { 'x-organization-id': 'org1db' } })
+      BatchandDays(day)
         .then((response) => {
-          setDemoDatas(response.data.data);
-          setDemoDatas1(response.data.data)
+          setDemoDatas(response);
+          setDemoDatas1(response)
           setLoading(false)
-          console.log(response.data.data, "API Response");
+          console.log(response, "API Response**");
         })
         .catch((error) => {
           console.error("Error fetching data", error);
@@ -398,7 +417,7 @@ const Home = () => {
           <Loading />
 
 
-          : day=='Sunday'?<Holiday>Today is Holiday</Holiday> : demoDatas1
+          : day=='Sunday'?<Holiday>Today is holiday.. </Holiday> : demoDatas1
             ?.filter((li, index, self) => index === self.findIndex((t) => t.mentor === li.mentor)) // Get unique mentors
             .sort((a, b) => a.mentor.localeCompare(b.mentor)) // Sort mentors alphabetically
             .map((mentorData, index) => (

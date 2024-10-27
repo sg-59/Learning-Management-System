@@ -19,32 +19,36 @@ import {
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-  const Navsection2 = styled.div`
+const Navsection2 = styled.div`
    display: flex;
-   padding: 15px;
+   padding: 7px;
    height: auto;
-  align-items: center;
-  z-index: 99;
-  border: .1px solid purple;
-  background-color: #411B66;
-  position:sticky;
-  top: 0;
-
+   align-items: center;
+   z-index: 99;
+   /* background: linear-gradient(135deg, #411B66, #8B4CAF); */
+   background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
+   border-radius: 10px 10px 0 0;
+   justify-content: space-between;
+   margin-bottom: 25px;
+   position: sticky;
+   top: 0;
 `
-
 const Leftside2 = styled.div`
   display: flex;
-  width: 50%;
+  width: 40%;
   align-items: center;
   justify-content: space-around;
+ margin-left: 67px;
 
 `
 const Rightside2 = styled.div`
-width: 50%;
+width: 40%;
   display: flex;
-  color: #f4e5e5;
+  color: #ffffff;
   align-items: center;
   justify-content: flex-end;
+  margin-right: 67px;
+
 `
 const Titles = styled.div`
   display: flex;
@@ -53,39 +57,47 @@ const Titles = styled.div`
 justify-content: center;
 margin-left:3%;
 margin-right: 3%;
+font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+`
+const Mdbcontainer=styled(MDBContainer)`
+     background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
+     height: 100vh;
+     overflow-x: scroll;
+
 `
 
 const Createstudent = () => {
   return (
-<MDBContainer fluid>
+<Mdbcontainer fluid>
 <Navsection2>
         <Leftside2>
-         
-    
         </Leftside2>
         <Rightside2>
 
-          <Titles>
-            <MDBIcon fas icon="home" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/home'}>Home</Link>
-          </Titles>
-          <Titles>
-            <MDBIcon fas icon="graduation-cap" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/student'}>Student</Link>
-          </Titles>
-          <Titles>
-            <MDBIcon fas icon="book-reader" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/#'}>Mentor</Link>
-          </Titles>
-          <Titles>
-            <MDBIcon fas icon="users" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/batch'}>Batches</Link>
-          </Titles>
-          <Titles>
-            <MDBIcon fas icon="headset" size='sm' />
-            <Link style={{ textDecoration: "none", fontSize: '12px', color: "white", margin: "3px" }} to={'/#'}>Chat</Link>
-          </Titles>
-        </Rightside2>
+<Titles>
+  <MDBIcon fas icon="home" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#ffffff", margin: "3px" }} to={'/home'}>Home</Link>
+</Titles>
+<Titles>
+  <MDBIcon fas icon="graduation-cap" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#ffffff", margin: "3px" }} to={'/student'}>Student</Link>
+</Titles>
+<Titles>
+  <MDBIcon fas icon="book-reader" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#ffffff", margin: "3px" }} to={'/#'}>Mentor</Link>
+</Titles>
+<Titles>
+  <MDBIcon fas icon="users" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#ffffff", margin: "3px" }} to={'/batch'}>Batches</Link>
+</Titles>
+<Titles>
+  <MDBIcon fas icon="headset" size='sm' />
+  <Link style={{ textDecoration: "none", fontSize: '12px', color: "#ffffff", margin: "3px" }} to={'/#'}>Chat</Link>
+</Titles>
+</Rightside2>
 
       </Navsection2>
   <MDBRow className='justify-content-center align-items-center m-5'>
@@ -178,7 +190,7 @@ const Createstudent = () => {
       </MDBCard>
     </MDBCol>
   </MDBRow>
-</MDBContainer>
+</Mdbcontainer>
 
   )
 }
