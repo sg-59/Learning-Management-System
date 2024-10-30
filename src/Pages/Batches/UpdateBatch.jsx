@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   MDBBtn,
   MDBContainer,
@@ -14,7 +14,9 @@ import {
   MDBIcon
 } from 'mdb-react-ui-kit';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { BatchWithstudents } from '../../Api call/Api';
+import Loading from '../../Component/Loading';
 
 const NavSection = styled.div`
   display: flex;
@@ -59,12 +61,15 @@ font-family: "Space Grotesk", sans-serif;
   font-weight:400; /* Default weight can be set here */
   font-style: normal;
 `
-
 const StyledContainer = styled(MDBContainer)`
   background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0.1));
   height: 100vh;
   overflow-x: auto;
   padding-top: 2rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:300; /* Default weight can be set here */
+  font-style: normal;
 `;
 
 const StyledDropdownToggle = styled(MDBDropdownToggle)`
@@ -89,8 +94,25 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 `
+const UpdateBatch = () => {
+    const [Batchdetails, setBatchdetails] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const {id}=useParams()
 
-const Update = () => {
+    useEffect(()=>{
+    setLoading(true)
+        BatchWithstudents(id)
+        .then((data) => {
+  
+          setBatchdetails(data)
+          setLoading(false)
+        })
+      
+    },[])
+
+console.log("Batch details........",Batchdetails);
+
+
   return (
     <StyledContainer fluid>
       <NavSection>
@@ -119,44 +141,44 @@ const Update = () => {
 </Titles>
 </Rightside2>
       </NavSection>
-
+{loading ? <Loading/> : Batchdetails.map((datas)=>(
       <MDBRow className='justify-content-center align-items-center mx-3'>
         <MDBCol md='10' lg='8'>
           <MDBCard className='shadow-sm rounded'>
             <MDBCardBody className='px-5 py-4'>
-              <h3 className="fw-bold text-center mb-4 pb-2 pb-md-0 mb-md-5">Create New Batch</h3>
+              <h3 className="fw-bold text-center mb-4 pb-2 pb-md-0 mb-md-5">Update Batch</h3>
               <MDBRow>
                 <MDBCol md='6'>
-                  <MDBInput wrapperClass='mb-4' label='Batch name' size='lg' id='form1' type='text' />
+                  <MDBInput wrapperClass='mb-4' label='Batch name' value={datas.name} size='lg' id='form1' type='text' />
                 </MDBCol>
                 <MDBCol md='6'>
-                  <MDBInput wrapperClass='mb-4' label='Batch code' size='lg' id='form2' type='text' />
+                  <MDBInput wrapperClass='mb-4' label='Batch code' value={datas.batch_code} size='lg' id='form2' type='text' />
                 </MDBCol>
               </MDBRow>
 
               <MDBRow>
                 <MDBCol md='6'>
-                  <MDBInput wrapperClass='mb-4' label='Batch starting date' size='lg' id='form3' type='date' />
+                  <MDBInput wrapperClass='mb-4' label='Batch starting date' value={new Date(datas.start_date).toLocaleString("en-US", { timeZone: "UTC" })} size='lg' id='form3' type='text' />
                 </MDBCol>
                 <MDBCol md='6'>
-                  <MDBInput wrapperClass='mb-4' label='Batch ending date' size='lg' id='form4' type='date' />
+                  <MDBInput wrapperClass='mb-4' label='Batch ending date' value={new Date(datas.end_date).toLocaleString("en-US", { timeZone: "UTC" })}  size='lg' id='form4' type='text' />
                 </MDBCol>
               </MDBRow>
 
               <MDBRow>
                 <MDBCol md='6'>
                   <label htmlFor="form6" className="form-label">Batch starting time</label>
-                  <MDBInput wrapperClass='mb-4' size='lg' id='form6' type='time' />
+                  <MDBInput wrapperClass='mb-4' size='lg'value={datas.start_time}  id='form6' type='text' />
                 </MDBCol>
                 <MDBCol md='6'>
                   <label htmlFor="form7" className="form-label">Batch ending time</label>
-                  <MDBInput wrapperClass='mb-4' size='lg' id='form7' type='time' />
+                  <MDBInput wrapperClass='mb-4' size='lg' value={datas.end_time} id='form7' type='text' />
                 </MDBCol>
               </MDBRow>
 
               <MDBRow>
                 <MDBCol md='6'>
-                  <MDBInput wrapperClass='mb-4' label='Mentor Name' size='lg' id='form8' type='text' />
+                  <MDBInput wrapperClass='mb-4' label='Mentor Name' value={datas.mentor} size='lg' id='form8' type='text' />
                 </MDBCol>
                 <MDBCol md='6'>
                   <MDBInput wrapperClass='mb-4' label='Duration' size='lg' id='form9' type='text' />
@@ -195,8 +217,10 @@ const Update = () => {
           </MDBCard>
         </MDBCol>
       </MDBRow>
+      ))}
+    
     </StyledContainer>
   )
 }
 
-export default Update;
+export default UpdateBatch

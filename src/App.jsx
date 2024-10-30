@@ -6,8 +6,9 @@ import Home from './Pages/Home page/Home'
 import Batches from './Pages/Batches/Batches'
 import Singlebatch from './Pages/SingleBatches/Singlebatch'
 import Student from './Pages/Student/Student'
-import Update from './Pages/Student/Update'
 import Createstudent from './Pages/CreateStudent/Createstudent'
+import CreateBatch from './Pages/Batches/Createbatch'
+import UpdateBatch from './Pages/Batches/UpdateBatch'
 
 
 
@@ -23,7 +24,8 @@ function App() {
       <Route path='/batch' element={<Batches />} />
       <Route path='/singlebatch/:id' element={<Singlebatch />} />
       <Route path='/student' element={<Student />} />
-      <Route path='/update' element={<Update />} />
+      <Route path='/createbatch' element={<CreateBatch />} />
+      <Route path='/updatebatch/:id' element={<UpdateBatch />} />
       <Route path='/createstudent' element={<Createstudent />} />
 
    </>

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { styled,keyframes } from 'styled-components'
 import Loading from '../../Component/Loading'
 import Navbar1 from '../../Component/Navbar1'
+import { students, studentswithId } from '../../Api call/Api'
 
 const DropDown = styled(MDBDropdownToggle)`
    font-family: "Space Grotesk", sans-serif;
@@ -82,19 +83,23 @@ const SpaceGroteskText = styled.div`
   color: white;
   cursor: pointer;
 `;
-
-
-
-const TableRow=styled.tr`
-    background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
-
+const StudentDetailTablecolumn=styled.td`
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400; /* Default weight can be set here */
+  font-style: normal;
+  font-size:14px;
+  text-align: center;
 `
 
-
-
-
-
-
+const StudentDetailTableHead=styled.td`
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:700; /* Default weight can be set here */
+  font-style: normal;
+  font-size:14px;
+  text-align: center;
+`
 
 const Student = () => {
   const [StudentDetails, setStudentDetails] = useState([]);
@@ -111,9 +116,9 @@ const Student = () => {
 
     if (!centredModal) {
       setLoading1(true);  // Set loading state for modal content
-      axios.get(`https://futuralab-lms.onrender.com/student/${id}`, { headers: { 'x-organization-id': 'org1db' } })
+      studentswithId(id)
         .then((data) => {
-          setsingleStudentData(data.data.data);
+          setsingleStudentData(data);
         
           setLoading1(false);  // Stop loading once data is fetched
         })
@@ -124,12 +129,12 @@ const Student = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`https://futuralab-lms.onrender.com/student`, { headers: { 'x-organization-id': 'org1db' } })
+  students()
       .then((data) => {
-        console.log(data.data);
+        console.log(data);
         
-        setStudentDetails(data.data.data);
-        setStudentDetails1(data.data.data);
+        setStudentDetails(data);
+        setStudentDetails1(data);
         setLoading(false);
       }).catch(() => setLoading(false));
 
@@ -219,14 +224,14 @@ return (
       <MDBTable align='middle'>
         <MDBTableHead>
           <tr>
-            <th scope='col'>Name</th>
-            <th scope='col'>Mobile</th>
-            <th scope='col'>Joining Date</th>
-            <th scope='col'>Course</th>
-            <th scope='col'>Duration</th>
-            <th scope='col'>Move</th>
-            <th scope='col'>Show full details</th>
-            <th scope='col'>Remove</th>
+            <StudentDetailTableHead scope='col'>Name</StudentDetailTableHead>
+            <StudentDetailTableHead scope='col'>Mobile</StudentDetailTableHead>
+            <StudentDetailTableHead scope='col'>Joining Date</StudentDetailTableHead>
+            <StudentDetailTableHead  scope='col'>Course</StudentDetailTableHead >
+            <StudentDetailTableHead  scope='col'>Duration</StudentDetailTableHead >
+            <StudentDetailTableHead  scope='col'>Move</StudentDetailTableHead >
+            <StudentDetailTableHead  scope='col'>Show full details</StudentDetailTableHead >
+            <StudentDetailTableHead  scope='col'>Remove</StudentDetailTableHead >
           </tr>
         </MDBTableHead>
        
@@ -235,7 +240,7 @@ return (
           <MDBTableBody key={index}>
             {StudentDetails1.filter((status)=>status.status==statusData.status).map((li,rowindex)=>(
             <tr>
-              <td >
+              <StudentDetailTablecolumn>
                 <div className={li.status === "active" ? 'bg-success' : "bg-danger"} style={{ width: "15px", height: "15px", borderRadius: '15px', float: "left" }}></div>
                 <div className='d-flex align-items-center'>
                   <img
@@ -250,25 +255,25 @@ return (
                     <p className='text-muted mb-0'>{li.student_id}</p>
                   </div>
                 </div>
-              </td>
-              <td>
+              </StudentDetailTablecolumn>
+              <StudentDetailTablecolumn>
                 <p className='fw-normal mb-1'>{li.phone_number}</p>
-              </td>
-              <td>
+              </StudentDetailTablecolumn>
+              <StudentDetailTablecolumn>
                 <p className='fw-normal mb-1'>10/05/2024</p>
-              </td>
-              <td>
+              </StudentDetailTablecolumn>
+              <StudentDetailTablecolumn>
                 <MDBBadge color='success' pill>
                   Mern
                 </MDBBadge>
-              </td>
-              <td>6 Months</td>
-              <td>
+              </StudentDetailTablecolumn>
+              <StudentDetailTablecolumn>6 Months</StudentDetailTablecolumn>
+              <StudentDetailTablecolumn>
                 <MDBBtn color='link' rounded size='sm'>
                   Edit
                 </MDBBtn>
-              </td>
-              <td>
+              </StudentDetailTablecolumn>
+              <StudentDetailTablecolumn>
                 <MDBBadge style={{cursor:'pointer'}}  color='success' className='fs-20 px-3' onClick={() => toggleOpen(li._id)} pill>Click</MDBBadge>
                
                 {centredModal && (
@@ -418,12 +423,12 @@ return (
                       )}
                   </StyledModal>
                   )}
-              </td>
-              <td>
+              </StudentDetailTablecolumn>
+              <StudentDetailTablecolumn>
                 <MDBBadge color='danger' pill>
                   Remove
                 </MDBBadge>
-              </td>
+              </StudentDetailTablecolumn>
             </tr>
             ))}
           </MDBTableBody>

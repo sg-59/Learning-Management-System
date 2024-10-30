@@ -9,6 +9,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 import Loading from '../../Component/Loading';
 import Navbar1 from '../../Component/Navbar1';
+import { Batch } from '../../Api call/Api';
 
 
 const DropDown = styled(MDBDropdownToggle)`
@@ -242,6 +243,7 @@ const Batches = () => {
   const [module, setModules] = useState([])
   const [loading,setLoading]=useState(false)
 
+
   // Get today's day when the component mounts
   useEffect(() => {
     const today = new Date();
@@ -263,13 +265,13 @@ const Batches = () => {
     setLoading(true)
     if (day) {
       console.log("Making API call for day:", day);
-      axios.get(`https://futuralab-lms.onrender.com/batch`, { headers: { 'x-organization-id': 'org1db' } })
+    Batch()
         .then((response) => {
-          setDemoDatas(response.data.data);
-          setDemoDatas1(response.data.data);
+          setDemoDatas(response);
+          setDemoDatas1(response);
 setLoading(false)
 
-          console.log(response.data.data, "API Response");
+          console.log(response, "API Response");
         })
         .catch((error) => {
           console.error("Error fetching data", error);
@@ -324,6 +326,7 @@ setLoading(false)
       }
 
 
+
   return (
     <MDBContainer fluid>
       <Navbar1 day={day}/>
@@ -332,7 +335,7 @@ setLoading(false)
           {/* <label style={{ marginLeft: "10px" }} htmlFor=""> */}
           <Datepicker selected={selectedDate} onChange={date => setDate(date)} customInput={<CustomInput />} />
           {/* </label> */}
-          <Link style={{textDecoration:"none"}} to={'/update'}><SpaceGroteskText><span class="material-symbols-outlined m-2">
+          <Link style={{textDecoration:"none"}} to={'/createbatch'}><SpaceGroteskText><span class="material-symbols-outlined m-2">
 add_card
 </span> Add New Batch</SpaceGroteskText></Link>
           <MDBDropdown>

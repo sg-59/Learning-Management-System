@@ -66,6 +66,10 @@ const Mdbcontainer=styled(MDBContainer)`
      background: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
      height: 100vh;
      overflow-x: scroll;
+     font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:300; /* Default weight can be set here */
+  font-style: normal;
 
 `
 

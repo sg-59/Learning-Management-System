@@ -12,7 +12,8 @@ const Main = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #b598d3, rgba(65, 27, 102, 0));
+  background: rgb(65,27,102);
+background: linear-gradient(0deg, rgba(65,27,102,1) 9%, rgba(65,27,102,0.018440652628238796) 70%); 
 `;
 
 const Sub = styled.div`
@@ -74,12 +75,6 @@ const Header=styled.h5`
   font-weight:400; /* Default weight can be set here */
   font-style: normal;
   color:white;
-`
-const Button=styled.button`
-  padding: 3px;
-  color: linear-gradient(135deg, rgba(65, 27, 102, 1), rgba(65, 27, 102, 0));
-  background-color: white;
-
 `
 
 

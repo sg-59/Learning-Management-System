@@ -12,9 +12,6 @@ import Loading from '../../Component/Loading';
 import Navbar1 from '../../Component/Navbar1';
 import { BatchandDays } from '../../Api call/Api';
 
-
-
-
 const DropDown = styled(MDBDropdownToggle)`
    font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
@@ -270,14 +267,13 @@ function CustomInput({ value, onClick }) {
 
 const Home = () => {
 
-
-
   const [demoDatas, setDemoDatas] = useState([]);
   const [demoDatas1, setDemoDatas1] = useState([]);
   const [selectedDate, setDate] = useState(null);
   const [module, setModules] = useState([]);
   const [day, setDay] = useState('');
   const [loading, setLoading] = useState(false)
+
 
   // Get today's day when the component mounts
   useEffect(() => {
