@@ -108,6 +108,31 @@ const Mdbcartimage = styled(MDBCardImage)`
     margin: 0 auto;
     top: 0;
 `
+const Popup = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Remove=styled(MDBDropdownToggle)`
+    background-color: darkred;
+  color: white;
+  border: 0;
+  box-shadow: none;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:300; /* Default weight can be set here */
+  font-style: normal;
+  font-size:9px;
+  text-align: center;
+`
 
 const Singlebatch = () => {
   const [Batchdetails, setBatchdetails] = useState([]);
@@ -315,6 +340,7 @@ const Singlebatch = () => {
                     {/* <MDBBadge color='success' className='fs-50' onClick={() => toggleOpen(li._id)} pill>click</MDBBadge> */}
                     <MDBBadge style={{ cursor: 'pointer' }} color='success' className='fs-20 px-3' onClick={() => toggleOpen(li._id)} pill>Click</MDBBadge>
                     {centredModal && (
+                      <Popup>
                       <MDBModal open={centredModal} onClose={() => setCentredModal(false)} backdrop={false}>
                         {loading1 ? (
                           <Loading />  // Show loader if data is still being fetched
@@ -350,6 +376,7 @@ const Singlebatch = () => {
                           </MDBModalDialog>
                         )}
                       </MDBModal>
+                      </Popup>
                     )}
                     {updateModal && (
                       <StyledModal open={updateModal} onClose={() => setupdatedModal(false)} backdrop={false}>
@@ -456,9 +483,20 @@ const Singlebatch = () => {
                     )}
                   </StudentDetailTablecolumn>
                   <StudentDetailTablecolumn>
-                    <MDBBadge color='danger' pill>
-                      Remove
-                    </MDBBadge>
+                  <MDBDropdown>
+              <Remove>
+  Remove
+</Remove>
+
+                      <MDBDropdownMenu style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                    
+                          <MDBDropdownItem link>course Compleated</MDBDropdownItem>
+                          <MDBDropdownItem link>Non active</MDBDropdownItem>
+                          <MDBDropdownItem link>permanently deleted</MDBDropdownItem>
+                     
+                      </MDBDropdownMenu>
+
+                    </MDBDropdown>
                   </StudentDetailTablecolumn>
                 </tr>
 

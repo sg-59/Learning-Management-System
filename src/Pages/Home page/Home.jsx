@@ -12,6 +12,8 @@ import Loading from '../../Component/Loading';
 import Navbar1 from '../../Component/Navbar1';
 import { BatchandDays } from '../../Api call/Api';
 
+
+
 const DropDown = styled(MDBDropdownToggle)`
    font-family: "Space Grotesk", sans-serif;
   font-optical-sizing: auto;
@@ -73,7 +75,7 @@ const Content = styled.div`
   }
   `
 const SubMain = styled.div`
-   min-width: 34%;
+   min-width: 450px;
 display: inline-block;
   text-align: center;
 `
@@ -351,7 +353,7 @@ const Home = () => {
   return (
 
     <MDBContainer fluid>
-      <Navbar1 day={day}/>
+      <Navbar1 day={day} filter={setDemoDatas1}/>
       <Navsection2>
         <Leftside2>
           {/* <label style={{ marginLeft: "10px" }} htmlFor=""> */}

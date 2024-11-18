@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { styled,keyframes } from 'styled-components'
 import Loading from '../../Component/Loading'
 import Navbar1 from '../../Component/Navbar1'
-import { students, studentswithId } from '../../Api call/Api'
+import { Batch, students, studentswithId } from '../../Api call/Api'
 
 const DropDown = styled(MDBDropdownToggle)`
    font-family: "Space Grotesk", sans-serif;
@@ -100,6 +100,40 @@ const StudentDetailTableHead=styled.td`
   font-size:14px;
   text-align: center;
 `
+const Popup = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.09);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Mdbcartimage = styled(MDBCardImage)`
+   width: 200px;
+    height: 200px;
+    border-radius: 50%; // for circular image
+    display: block;     // for centering the image
+    margin: 0 auto;
+    top: 0;
+`
+
+const Remove=styled(MDBDropdownToggle)`
+    background-color: darkred;
+  color: white;
+  border: 0;
+  box-shadow: none;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:300; /* Default weight can be set here */
+  font-style: normal;
+  font-size:9px;
+  text-align: center;
+`
 
 const Student = () => {
   const [StudentDetails, setStudentDetails] = useState([]);
@@ -110,6 +144,7 @@ const Student = () => {
   const [centredModal, setCentredModal] = useState(false);
   const [updateModal, setupdatedModal] = useState(false);
   const [activestatus,setActiveStatus]=useState('All')
+  const [batch_code, setBatch_code] = useState([])
   const toggleOpen = (id) => {
     console.log("where is id", id);
     setCentredModal(!centredModal);
@@ -131,7 +166,7 @@ const Student = () => {
     setLoading(true);
   students()
       .then((data) => {
-        console.log(data);
+        console.log('../',data);
         
         setStudentDetails(data);
         setStudentDetails1(data);
@@ -162,9 +197,16 @@ if(value=='all'){
     setupdatedModal(!updateModal)
   }
 
+  useEffect(() => {
+    Batch().then((data) => {
+      console.log("all batches", data);
+      setBatch_code(data)
+    })
+  }, [StudentDetails])
+
 return (
   <MDBContainer fluid>
-    <Navbar1/>
+    <Navbar1 student={StudentDetails} setStudent={setStudentDetails}/>
       <Navsection2>
         <Leftside2>
       <Link style={{textDecoration:"none"}} to={'/createstudent'}><SpaceGroteskText>+ create student</SpaceGroteskText></Link>
@@ -269,15 +311,23 @@ return (
               </StudentDetailTablecolumn>
               <StudentDetailTablecolumn>6 Months</StudentDetailTablecolumn>
               <StudentDetailTablecolumn>
-                <MDBBtn color='link' rounded size='sm'>
-                  Edit
-                </MDBBtn>
+              <MDBDropdown>
+                      <MDBDropdownToggle className='dropdown-item fs-9 text-dark bg-transparent border-0 shadow-none'>
+                        Select Batch code
+                      </MDBDropdownToggle>
+                      <MDBDropdownMenu style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                        {batch_code.map((li) => (
+                          <MDBDropdownItem link>{li.batch_code}</MDBDropdownItem>
+                        ))}
+                      </MDBDropdownMenu>
+
+                    </MDBDropdown>
               </StudentDetailTablecolumn>
               <StudentDetailTablecolumn>
                 <MDBBadge style={{cursor:'pointer'}}  color='success' className='fs-20 px-3' onClick={() => toggleOpen(li._id)} pill>Click</MDBBadge>
                
                 {centredModal && (
-                      
+                     <Popup> 
                 <MDBModal open={centredModal} onClose={toggleOpen} backdrop={false}>
                    {loading1 ? (
                        <Loading/> // Show loader if data is still being fetched
@@ -292,7 +342,7 @@ return (
                       <MDBModalBody>
                      
                           <MDBCard>
-                            <MDBCardImage style={{ width: '200px', height: '200px' }} position='top' alt='...' src='https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg' />
+                            <Mdbcartimage style={{ width: '200px', height: '200px' }} position='top' alt='...' src='https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg' />
                             <MDBCardBody>
                               <MDBCardTitle>{singleStudentData.first_name} {singleStudentData.last_name}</MDBCardTitle>
                               <MDBCardText>
@@ -318,6 +368,7 @@ return (
                   </MDBModalDialog>
                 )}
                 </MDBModal>
+                </Popup>
                 )}
                   {updateModal && (
                   <StyledModal  open={updateModal} onClose={() => setupdatedModal(false)} backdrop={false}>
@@ -425,9 +476,20 @@ return (
                   )}
               </StudentDetailTablecolumn>
               <StudentDetailTablecolumn>
-                <MDBBadge color='danger' pill>
-                  Remove
-                </MDBBadge>
+              <MDBDropdown>
+              <Remove>
+  Remove
+</Remove>
+
+                      <MDBDropdownMenu style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                    
+                          <MDBDropdownItem link>course Compleated</MDBDropdownItem>
+                          <MDBDropdownItem link>Non active</MDBDropdownItem>
+                          <MDBDropdownItem link>permanently deleted</MDBDropdownItem>
+                     
+                      </MDBDropdownMenu>
+
+                    </MDBDropdown>
               </StudentDetailTablecolumn>
             </tr>
             ))}

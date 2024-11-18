@@ -125,7 +125,7 @@ display: flex;
   width: 60%;
   align-items: center;
   justify-content: space-around;
-  margin-left: 69px;
+  margin-left: 30px;
 
 `
 const Rightside2 = styled.div`
@@ -329,11 +329,11 @@ setLoading(false)
 
   return (
     <MDBContainer fluid>
-      <Navbar1 day={day}/>
+      <Navbar1 day={day} filter={setDemoDatas1}/>
       <Navsection2>
         <Leftside2>
           {/* <label style={{ marginLeft: "10px" }} htmlFor=""> */}
-          <Datepicker selected={selectedDate} onChange={date => setDate(date)} customInput={<CustomInput />} />
+          {/* <Datepicker selected={selectedDate} onChange={date => setDate(date)} customInput={<CustomInput />} /> */}
           {/* </label> */}
           <Link style={{textDecoration:"none"}} to={'/createbatch'}><SpaceGroteskText><span class="material-symbols-outlined m-2">
 add_card
